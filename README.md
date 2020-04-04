@@ -6,4 +6,4 @@ Simple web game in flask and javascript. To run, just:
 python main.py
 ```
 
-And access (localhost)[localhost:5000/]
+And access [localhost](localhost:5000/)
