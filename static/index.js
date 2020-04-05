@@ -1,39 +1,63 @@
 const MAX_WIDTH = $(window).width();
+const MAX_HEIGHT = $(window).height();
 const HOLD_DELAY = 10;
+const MAX_PROPS = 5;
+const PROP_SPEED = 100;
+const CREATE_PROP_DELAY = 500;
+const MAXIMUM_WAIT_PROP_CREATION_TIME = 1000;
+const MINIMAL_WAIT_PROP_CREATION_TIME = 200;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
 const MAX_RIGHT = MAX_WIDTH - COW_IMG_WIDTH;
 
-var friends_arr = $('#friends');
-var enemies_arr = $('#enemies');
-var base_enemy = $('#base-enemy');
-var base_friend = $('#base-friend');
+var props_div = $('#props');
 
-$(document).ready(() => {
-    
-});
+var base_friend = $('.friend');
+var base_enemy = $('.enemy');
 
-function get_pos(obj) {
-    var left = obj.css('left');
-    return parseInt(left.substring(0, left.length - 2));
+var props_arr = [];
+
+
+function get_pos(obj, axis) {
+    var pos = obj.css(axis);
+    return parseInt(pos.substring(0, pos.length - 2));
 }
 
-function translate_obj(obj, amount, threshold_check, limit) {
-    var left = get_pos(obj);
-    left += amount;
-    if (threshold_check(left)) {
-        left = limit;
+function set_pos(obj, axis, pos) {
+    obj.css(axis, pos);
+}
+
+function translate_obj(obj, amount, axis, threshold_check, limit) {
+    var pos = get_pos(obj, axis);
+    pos += amount;
+    if (threshold_check(pos)) {
+        pos = limit;
     }
-    obj.css('left', left);
+    set_pos(obj, axis, pos);
 }
 
 function cow_move_left() {
-    translate_obj(cow, -10, left => left < 0, 0);
+    translate_obj(cow, -10, 'left', left => left < 0, 0);
 }
 
 function cow_move_right() {
-    translate_obj(cow, 10, left => left > MAX_RIGHT, MAX_RIGHT);
+    translate_obj(cow, 10, 'left', left => left > MAX_RIGHT, MAX_RIGHT);
+}
+
+function make_move_prop_down(prop) {
+    var new_prop_created = false;
+    return () => {
+        translate_obj(prop, 10, 'top', top => {
+            if (top > MAX_HEIGHT) {
+                prop.remove();
+                if (!new_prop_created) {
+                    create_prop();
+                    new_prop_created = true;
+                }
+            }
+        }, MAX_HEIGHT);
+    };
 }
 
 $("#left-arrow").click(() => {
@@ -58,4 +82,40 @@ $("#right-arrow").mousedown(() => {
     }, HOLD_DELAY);
 }).mouseup(() => {
     clearInterval(intervalId);
+});
+
+function get_start_position() {
+    return 32 + parseInt(Math.random() * (MAX_WIDTH - 64));
+}
+
+function create_prop() {
+    const base = parseInt(Math.random() * 2) ? base_enemy : base_friend;
+    const clone = base.clone();
+    clone.removeAttr('hidden');
+    set_pos(clone, 'left', get_start_position());
+    props_arr.push(clone);
+    clone.appendTo(props_div);
+    setInterval(make_move_prop_down(clone), PROP_SPEED);
+}
+
+function get_wait_time() {
+    return MINIMAL_WAIT_PROP_CREATION_TIME + parseInt(Math.random() * (
+        MAXIMUM_WAIT_PROP_CREATION_TIME - MINIMAL_WAIT_PROP_CREATION_TIME
+    ));
+}
+
+$(document).ready(() => {
+    setTimeout(() => {
+        create_prop();
+        setTimeout(() => {
+            create_prop();
+            setTimeout(() => {
+                create_prop();
+                setTimeout(() => {
+                    create_prop();
+                    setTimeout(create_prop, get_wait_time());
+                }, get_wait_time());
+            }, get_wait_time());
+        }, get_wait_time());
+    }, get_wait_time());
 });
