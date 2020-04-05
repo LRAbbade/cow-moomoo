@@ -1,11 +1,11 @@
 const MAX_WIDTH = $(window).width();
 const MAX_HEIGHT = $(window).height();
 const HOLD_DELAY = 10;
-const MAX_PROPS = 5;
-const PROP_SPEED = 100;
-const CREATE_PROP_DELAY = 500;
+const MAX_PROPS = 20;
+const PROP_SPEED = 50;
 const MAXIMUM_WAIT_PROP_CREATION_TIME = 1000;
-const MINIMAL_WAIT_PROP_CREATION_TIME = 200;
+const MINIMAL_WAIT_PROP_CREATION_TIME = 300;
+const COW_STEP_SIZE = 20;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
@@ -38,11 +38,11 @@ function translate_obj(obj, amount, axis, threshold_check, limit) {
 }
 
 function cow_move_left() {
-    translate_obj(cow, -10, 'left', left => left < 0, 0);
+    translate_obj(cow, -COW_STEP_SIZE, 'left', left => left < 0, 0);
 }
 
 function cow_move_right() {
-    translate_obj(cow, 10, 'left', left => left > MAX_RIGHT, MAX_RIGHT);
+    translate_obj(cow, COW_STEP_SIZE, 'left', left => left > MAX_RIGHT, MAX_RIGHT);
 }
 
 function make_move_prop_down(prop) {
