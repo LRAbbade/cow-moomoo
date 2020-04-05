@@ -4,6 +4,26 @@
     background-color: blueviolet;
 }
 
-html, body {
-    height: 100%;
+#cow {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    z-index: 10;
+}
+
+.arrow {
+    position: absolute;
+    bottom: 0px;
+    margin: 20px;
+    z-index: 11;
+}
+
+#left-arrow {
+    left: 0%;
+    opacity: 0.2;
+}
+
+#right-arrow {
+    right: 0%;
+    opacity: 0.2;
 }

@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
+    <div id='cow'>
+        <img src="{{ url_for('static', filename='resources/live_cow.png') }}">
+    </div>
+    <div class="arrow" id='left-arrow'>
+        <img src="{{ url_for('static', filename='resources/left_arrow.png') }}">
+    </div>
+    <div class="arrow" id='right-arrow'>
+        <img src="{{ url_for('static', filename='resources/right_arrow.png') }}">
+    </div>
+
+    <div id='enemies'>
+        <div id='base-enemy' hidden>
+            <img src="{{ url_for('static', filename='resources/enemy.png') }}">
+        </div>
+    </div>
+    <div id='friends'>
+        <div id='base-friend' hidden>
+            <img src="{{ url_for('static', filename='resources/friend.png') }}">
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
