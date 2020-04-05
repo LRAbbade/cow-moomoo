@@ -113,7 +113,37 @@ $(document).ready(() => {
                 create_prop();
                 setTimeout(() => {
                     create_prop();
-                    setTimeout(create_prop, get_wait_time());
+                    setTimeout(() => {
+                        create_prop();   // 5
+                        setTimeout(() => {
+                            create_prop();
+                            setTimeout(() => {
+                                create_prop();
+                                setTimeout(() => {
+                                    create_prop();
+                                    setTimeout(() => {
+                                        create_prop();
+                                        setTimeout(() => {
+                                            create_prop();  // 10
+                                            setTimeout(() => {
+                                                create_prop();
+                                                setTimeout(() => {
+                                                    create_prop();
+                                                    setTimeout(() => {
+                                                        create_prop();
+                                                        setTimeout(() => {
+                                                            create_prop();
+                                                            setTimeout(create_prop, get_wait_time());   // 15
+                                                        }, get_wait_time());
+                                                    }, get_wait_time());
+                                                }, get_wait_time());
+                                            }, get_wait_time());
+                                        }, get_wait_time());
+                                    }, get_wait_time());
+                                }, get_wait_time());
+                            }, get_wait_time());
+                        }, get_wait_time());
+                    }, get_wait_time());
                 }, get_wait_time());
             }, get_wait_time());
         }, get_wait_time());
