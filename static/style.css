@@ -1,7 +1,8 @@
 * {
 	box-sizing: border-box;
     margin: 0px;
-    background-color: blueviolet;
+    background-image: url("resources/fundo-jogo.png");
+    background-repeat: repeat;
 }
 
 #cow {

@@ -9,23 +9,23 @@
 </head>
 <body>
 
-    <div class='enemy notSelectable' hidden>
+    <div class='enemy' hidden>
         <img src="{{ url_for('static', filename='resources/enemy.png') }}">
     </div>
 
-    <div class='friend notSelectable' hidden>
+    <div class='friend' hidden>
         <img src="{{ url_for('static', filename='resources/friend.png') }}">
     </div>
 
     <div id='props'></div>
 
-    <div id='cow notSelectable'>
+    <div id='cow'>
         <img src="{{ url_for('static', filename='resources/live_cow.png') }}">
     </div>
-    <div class="arrow notSelectable" id='left-arrow'>
+    <div class="arrow" id='left-arrow'>
         <img src="{{ url_for('static', filename='resources/left_arrow.png') }}">
     </div>
-    <div class="arrow notSelectable" id='right-arrow'>
+    <div class="arrow" id='right-arrow'>
         <img src="{{ url_for('static', filename='resources/right_arrow.png') }}">
     </div>
 

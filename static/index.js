@@ -113,7 +113,6 @@ function get_start_position() {
 function create_prop() {
     const base = parseInt(Math.random() * 2) ? base_enemy : base_friend;
     const clone = base.clone();
-    clone.disableSelection();
     clone.removeAttr('hidden');
     clone.attr('id', ++prop_id);
     set_pos(clone, 'left', get_start_position());
@@ -172,21 +171,4 @@ function update() {
     Object.keys(update_callbacks).forEach(key => update_callbacks[key]());
 }
 
-$.fn.extend({
-    disableSelection: () => {
-        this.each(() => {
-            this.onselectstart = () => {
-                return false;
-            };
-            this.unselectable = "on";
-            $(this).css('-moz-user-select', 'none');
-            $(this).css('-webkit-user-select', 'none');
-        });
-        return this;
-    }
-});
-
-$(document).ready(() => {
-    $('.notSelectable').disableSelection();
-    setInterval(update, REFRESH_RATE);
-});
+$(document).ready(() => setInterval(update, REFRESH_RATE));
