@@ -10,6 +10,7 @@ const FRAME_RATE = 30;
 const REFRESH_RATE = 1 / FRAME_RATE;
 const COLLISION_DISTANCE = 120;
 const COLLISION_SKEW = 0.87;
+const FINISH_POINTS = 5;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
@@ -152,6 +153,16 @@ var update_callbacks = {
                 console.log(`isFriend=${isFriend}, points=${points}`);
             }
         });
+    },
+    check_finish: () => {
+        if (Math.abs(points) >= FINISH_POINTS) {
+            delete update_callbacks.populate;
+            delete update_callbacks.check_collision;
+
+            props_arr.forEach(prop => prop.remove());
+
+            const win = points > 3;
+        }
     }
 }
 
