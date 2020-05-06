@@ -19,8 +19,10 @@
 }
 
 #ending-cow {
-    position: absolute;
-    left: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .arrow {
@@ -56,6 +58,8 @@
 .ending {
     padding: 200px 100px;
     background: transparent;
+    color: white;
+    font-size: large;
 }
 
 .coupom {
