@@ -19,7 +19,7 @@
 }
 
 .arrow {
-    background: rgba(137, 43, 226, 0.3);
+    background: rgba(137, 43, 226, 0.1);
     position: absolute;
     bottom: 0px;
     margin: 20px;
@@ -28,12 +28,12 @@
 
 #left-arrow {
     left: 0%;
-    opacity: 0.2;
+    opacity: 0.8;
 }
 
 #right-arrow {
     right: 0%;
-    opacity: 0.2;
+    opacity: 0.8;
 }
 
 .enemy {
