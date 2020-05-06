@@ -156,12 +156,12 @@ var update_callbacks = {
     },
     check_finish: () => {
         if (Math.abs(points) >= FINISH_POINTS) {
-            delete update_callbacks.populate;
-            delete update_callbacks.check_collision;
-
+            Object.keys(update_callbacks).forEach(key => delete update_callbacks[key]);
             props_arr.forEach(prop => prop.remove());
 
             const win = points > 3;
+
+            window.location.href = win ? '/ending' : '/alternative_ending'
         }
     }
 }
