@@ -19,6 +19,7 @@
 }
 
 .arrow {
+    background: rgba(137, 43, 226, 0.3);
     position: absolute;
     bottom: 0px;
     margin: 20px;
