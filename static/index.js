@@ -1,10 +1,10 @@
 const MAX_WIDTH = $(window).width();
 const MAX_HEIGHT = $(window).height();
 const HOLD_DELAY = 10;
-const MAX_PROPS = 15;
+const MAX_PROPS = 12;
 const PROP_SPEED = 50;
-const MAXIMUM_WAIT_PROP_CREATION_TIME = 1000;
-const MINIMAL_WAIT_PROP_CREATION_TIME = 500;
+const MAXIMUM_WAIT_PROP_CREATION_TIME = 1500;
+const MINIMAL_WAIT_PROP_CREATION_TIME = 1000;
 const COW_STEP_SIZE = 20;
 const FRAME_RATE = 30;
 const REFRESH_RATE = 1 / FRAME_RATE;
