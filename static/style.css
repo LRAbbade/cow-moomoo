@@ -50,5 +50,8 @@
 
 .ending {
     padding: 200px 100px;
-    background-color: white;
+}
+
+.coupom {
+    color: greenyellow;
 }
