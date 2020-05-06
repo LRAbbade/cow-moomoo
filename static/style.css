@@ -47,3 +47,8 @@
     opacity: 0.75;
     top: 0%;
 }
+
+.ending {
+    padding: 200px 100px;
+    background-color: white;
+}
