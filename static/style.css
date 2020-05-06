@@ -18,6 +18,7 @@
 }
 
 .arrow {
+    touch-action: none;
     position: absolute;
     bottom: 0px;
     margin: 20px;
