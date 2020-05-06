@@ -2,8 +2,9 @@ const MAX_WIDTH = $(window).width();
 const MAX_HEIGHT = $(window).height();
 const HOLD_DELAY = 10;
 const MAX_PROPS = 12;
-const PROP_SPEED = 30;      // inverse
-const MAXIMUM_WAIT_PROP_CREATION_TIME = 2500;
+const PROP_WIDTH = 256;
+const PROP_SPEED = 20;      // inverse
+const MAXIMUM_WAIT_PROP_CREATION_TIME = 2200;
 const MINIMAL_WAIT_PROP_CREATION_TIME = 1500;
 const COW_STEP_SIZE = 40;
 const FRAME_RATE = 30;
@@ -108,7 +109,7 @@ $("#right-arrow").mousedown(() => {
 });
 
 function get_start_position() {
-    return 32 + parseInt(Math.random() * (MAX_WIDTH - 64));
+    return parseInt(Math.random() * (MAX_WIDTH - PROP_WIDTH));
 }
 
 function is_prop_friend(prop) {
