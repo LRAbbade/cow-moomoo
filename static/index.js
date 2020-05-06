@@ -11,6 +11,7 @@ const REFRESH_RATE = 1 / FRAME_RATE;
 const COLLISION_DISTANCE = 120;
 const COLLISION_SKEW = 0.87;
 const FINISH_POINTS = 5;
+const IMG_COUNT = 3;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
@@ -38,12 +39,12 @@ function get_coordinates(obj) {
     };
 }
 
-function euclidean_distance(obj1, obj2, heuristic_x=1, heuristic_y=1) {
+function euclidean_distance(obj1, obj2, heuristic_x = 1, heuristic_y = 1) {
     var obj1_pos = get_coordinates(obj1);
     var obj2_pos = get_coordinates(obj2);
 
-    return ((Math.abs(obj1_pos.x - obj2_pos.x) ** (2 * heuristic_x) + 
-             Math.abs(obj1_pos.y - obj2_pos.y) ** (2 * heuristic_y)) ** (1 / 2));
+    return ((Math.abs(obj1_pos.x - obj2_pos.x) ** (2 * heuristic_x) +
+        Math.abs(obj1_pos.y - obj2_pos.y) ** (2 * heuristic_y)) ** (1 / 2));
 }
 
 function set_pos(obj, axis, pos) {
@@ -110,10 +111,22 @@ function get_start_position() {
     return 32 + parseInt(Math.random() * (MAX_WIDTH - 64));
 }
 
+function is_prop_friend(prop) {
+    return prop.hasClass('friend');
+}
+
+function get_random_prop_image() {
+    return parseInt(Math.random() * IMG_COUNT);
+}
+
 function create_prop() {
     const base = parseInt(Math.random() * 2) ? base_enemy : base_friend;
-    const clone = base.clone();
+    var clone = base.clone();
+    const is_friend = is_prop_friend(clone);
+
     clone.removeAttr('hidden');
+    clone.find('img').attr('src', '../static/resources/' +
+        (is_friend ? 'friends/friend' : 'enemies/enemy') + `_${get_random_prop_image()}.png`);
     clone.attr('id', ++prop_id);
     set_pos(clone, 'left', get_start_position());
     props_arr.push(clone);
@@ -143,14 +156,13 @@ var update_callbacks = {
     check_collision: () => {
         props_arr.forEach(prop => {
             const prop_id = prop.attr('id');
-            if (!collected_ids.includes(prop_id) && 
+            if (!collected_ids.includes(prop_id) &&
                 euclidean_distance(prop, cow, COLLISION_SKEW) < COLLISION_DISTANCE) {
                 // remove prop and count point
-                const isFriend = prop.hasClass('friend');
+                const is_friend = is_prop_friend(prop);
                 collected_ids.push(prop_id);
                 prop.remove();
-                points += isFriend ? 1 : -1;
-                console.log(`isFriend=${isFriend}, points=${points}`);
+                points += is_friend ? 1 : -1;
             }
         });
     },
@@ -158,10 +170,7 @@ var update_callbacks = {
         if (Math.abs(points) >= FINISH_POINTS) {
             Object.keys(update_callbacks).forEach(key => delete update_callbacks[key]);
             props_arr.forEach(prop => prop.remove());
-
-            const win = points > 3;
-
-            window.location.href = win ? '/ending' : '/alternative_ending'
+            window.location.href = points > 3 ? '/ending' : '/alternative_ending'
         }
     }
 }
