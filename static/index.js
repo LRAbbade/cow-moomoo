@@ -8,7 +8,8 @@ const MINIMAL_WAIT_PROP_CREATION_TIME = 500;
 const COW_STEP_SIZE = 20;
 const FRAME_RATE = 30;
 const REFRESH_RATE = 1 / FRAME_RATE;
-const COLLISION_DISTANCE = 150;
+const COLLISION_DISTANCE = 120;
+const COLLISION_SKEW = 0.87;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
@@ -21,6 +22,7 @@ var base_enemy = $('.enemy');
 
 var props_arr = [];
 var points = 0;
+var prop_id = 0;
 
 
 function get_pos(obj, axis) {
@@ -35,11 +37,12 @@ function get_coordinates(obj) {
     };
 }
 
-function euclidean_distance(obj1, obj2) {
+function euclidean_distance(obj1, obj2, heuristic_x=1, heuristic_y=1) {
     var obj1_pos = get_coordinates(obj1);
     var obj2_pos = get_coordinates(obj2);
 
-    return (Math.abs(obj1_pos.x - obj2_pos.x) ** 2 + Math.abs(obj1_pos.y - obj2_pos.y) ** 2) ** (1 / 2);
+    return ((Math.abs(obj1_pos.x - obj2_pos.x) ** (2 * heuristic_x) + 
+             Math.abs(obj1_pos.y - obj2_pos.y) ** (2 * heuristic_y)) ** (1 / 2));
 }
 
 function set_pos(obj, axis, pos) {
@@ -110,6 +113,7 @@ function create_prop() {
     const base = parseInt(Math.random() * 2) ? base_enemy : base_friend;
     const clone = base.clone();
     clone.removeAttr('hidden');
+    clone.attr('id', ++prop_id);
     set_pos(clone, 'left', get_start_position());
     props_arr.push(clone);
     clone.appendTo(props_div);
@@ -123,6 +127,7 @@ function get_wait_time() {
 }
 
 var populating = false;
+var collected_ids = [];
 
 var update_callbacks = {
     populate: () => {
@@ -136,8 +141,15 @@ var update_callbacks = {
     },
     check_collision: () => {
         props_arr.forEach(prop => {
-            if (euclidean_distance(prop, cow) < COLLISION_DISTANCE) {
+            const prop_id = prop.attr('id');
+            if (!collected_ids.includes(prop_id) && 
+                euclidean_distance(prop, cow, COLLISION_SKEW) < COLLISION_DISTANCE) {
+                // remove prop and count point
+                const isFriend = prop.hasClass('friend');
+                collected_ids.push(prop_id);
                 prop.remove();
+                points += isFriend ? 1 : -1;
+                console.log(`isFriend=${isFriend}, points=${points}`);
             }
         });
     }
