@@ -1,11 +1,14 @@
 const MAX_WIDTH = $(window).width();
 const MAX_HEIGHT = $(window).height();
 const HOLD_DELAY = 10;
-const MAX_PROPS = 20;
+const MAX_PROPS = 15;
 const PROP_SPEED = 50;
 const MAXIMUM_WAIT_PROP_CREATION_TIME = 1000;
-const MINIMAL_WAIT_PROP_CREATION_TIME = 300;
+const MINIMAL_WAIT_PROP_CREATION_TIME = 500;
 const COW_STEP_SIZE = 20;
+const FRAME_RATE = 30;
+const REFRESH_RATE = 1 / FRAME_RATE;
+const COLLISION_DISTANCE = 150;
 
 var cow = $('#cow');
 const COW_IMG_WIDTH = cow.children('img').width();
@@ -17,11 +20,26 @@ var base_friend = $('.friend');
 var base_enemy = $('.enemy');
 
 var props_arr = [];
+var points = 0;
 
 
 function get_pos(obj, axis) {
     var pos = obj.css(axis);
     return parseInt(pos.substring(0, pos.length - 2));
+}
+
+function get_coordinates(obj) {
+    return {
+        x: get_pos(obj, 'left'),
+        y: get_pos(obj, 'top')
+    };
+}
+
+function euclidean_distance(obj1, obj2) {
+    var obj1_pos = get_coordinates(obj1);
+    var obj2_pos = get_coordinates(obj2);
+
+    return (Math.abs(obj1_pos.x - obj2_pos.x) ** 2 + Math.abs(obj1_pos.y - obj2_pos.y) ** 2) ** (1 / 2);
 }
 
 function set_pos(obj, axis, pos) {
@@ -104,48 +122,30 @@ function get_wait_time() {
     ));
 }
 
-$(document).ready(() => {
-    setTimeout(() => {
-        create_prop();
-        setTimeout(() => {
-            create_prop();
+var populating = false;
+
+var update_callbacks = {
+    populate: () => {
+        if (props_arr.length < MAX_PROPS && !populating) {
+            populating = true;
             setTimeout(() => {
                 create_prop();
-                setTimeout(() => {
-                    create_prop();
-                    setTimeout(() => {
-                        create_prop();   // 5
-                        setTimeout(() => {
-                            create_prop();
-                            setTimeout(() => {
-                                create_prop();
-                                setTimeout(() => {
-                                    create_prop();
-                                    setTimeout(() => {
-                                        create_prop();
-                                        setTimeout(() => {
-                                            create_prop();  // 10
-                                            setTimeout(() => {
-                                                create_prop();
-                                                setTimeout(() => {
-                                                    create_prop();
-                                                    setTimeout(() => {
-                                                        create_prop();
-                                                        setTimeout(() => {
-                                                            create_prop();
-                                                            setTimeout(create_prop, get_wait_time());   // 15
-                                                        }, get_wait_time());
-                                                    }, get_wait_time());
-                                                }, get_wait_time());
-                                            }, get_wait_time());
-                                        }, get_wait_time());
-                                    }, get_wait_time());
-                                }, get_wait_time());
-                            }, get_wait_time());
-                        }, get_wait_time());
-                    }, get_wait_time());
-                }, get_wait_time());
+                populating = false;
             }, get_wait_time());
-        }, get_wait_time());
-    }, get_wait_time());
-});
+        }
+    },
+    check_collision: () => {
+        props_arr.forEach(prop => {
+            if (euclidean_distance(prop, cow) < COLLISION_DISTANCE) {
+                prop.remove();
+            }
+        });
+    }
+}
+
+function update() {
+    // console.log(`Running update functions ${Object.keys(update_callbacks)}`);
+    Object.keys(update_callbacks).forEach(key => update_callbacks[key]());
+}
+
+$(document).ready(() => setInterval(update, REFRESH_RATE));
